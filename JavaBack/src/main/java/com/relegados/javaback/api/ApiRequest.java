@@ -17,17 +17,17 @@ import java.sql.Statement;
  */
 public class ApiRequest {
     
-        public String selectFrom(String table) throws ClassNotFoundException{  
-        String sql = "SELECT * FROM " + table;  
+    public String selectFrom(String table) throws ClassNotFoundException{  
+        String sql = "SELECT * FROM " + table;
         String json = "{\"" + table + "\":[";
-        
+
         Class.forName("org.sqlite.JDBC");
-        
+
         try {
             Connection conn = DataBase.connect();
             Statement stmt  = conn.createStatement();
             ResultSet rs    = stmt.executeQuery(sql);
-            
+
             while (rs.next()) {
                 ResultSetMetaData rsmd = rs.getMetaData();
                 int columnsNumber = rsmd.getColumnCount();
@@ -40,13 +40,15 @@ public class ApiRequest {
                         json += ",";
                 }
                 json += "\n},";
-                
+
             }
-            
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         
+        // Quitando la última coma.
+        json = json.substring(0, json.length()-1);
         json += "\n]}";
         return json;
     }

@@ -26,7 +26,12 @@ public class ApiReservas extends HttpServlet {
         
         try {
             ApiRequest api = new ApiRequest();
-            String responseJson = api.selectFrom("categories");
+            /* 
+            Le paso la tabla por parametro GET
+            http://localhost:8080/JavaBack/api?table=users
+            */ 
+            String data = request.getParameter("table");
+            String responseJson = api.selectFrom(data);
             
             PrintWriter out = response.getWriter();
             response.setContentType("application/json");
